@@ -5,18 +5,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
 app.UseHttpsRedirection();
 
@@ -27,4 +25,5 @@ app.MapControllers();
 app.Run();
 
 // Añadido: ruta raíz simple para comprobar que la API está arriba
-app.MapGet("/", () => Results.Text("API funcionando. Visita /swagger para la UI de Swagger o /WeatherForecast para el endpoint de ejemplo."));
+// Redirigir la raíz a /swagger para que al abrir la app se muestre la UI de Swagger
+app.MapGet("/", () => Results.Redirect("/swagger"));
